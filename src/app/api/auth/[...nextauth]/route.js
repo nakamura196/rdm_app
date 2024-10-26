@@ -9,11 +9,11 @@ const authOptions = {
             clientId: process.env.GAKUNIN_CLIENT_ID,
             clientSecret: process.env.GAKUNIN_CLIENT_SECRET,
             authorization: {
-                url: "https://accounts.rdm.nii.ac.jp/oauth/authorize",
+                url: "https://accounts.test.osf.io/oauth/authorize",
                 params: { scope: "openid email profile" },
             },
             token: {
-                url: "https://accounts.rdm.nii.ac.jp/oauth/token",
+                url: "https://accounts.test.osf.io/oauth/token",
             },
             userinfo: {
                 url: "https://api.rdm.nii.ac.jp/v2/users/me/",
