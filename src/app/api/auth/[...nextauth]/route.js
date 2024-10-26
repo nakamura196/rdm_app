@@ -1,6 +1,6 @@
 import NextAuth from "next-auth";
 
-export const authOptions = {
+const authOptions = {
     providers: [
         {
             id: "gakunin",
@@ -27,14 +27,15 @@ export const authOptions = {
             },
         },
     ],
-    useState: false, // 追加：stateチェックを無効化
+    useState: false,
     callbacks: {
         async redirect({ baseUrl }) {
-            // ログイン後にホームページにリダイレクト
             return baseUrl;
         },
     },
+    secret: process.env.NEXTAUTH_SECRET,
 };
 
+// エクスポートするのは`NextAuth`で生成したハンドラのみ
 const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };
