@@ -41,6 +41,7 @@ export const authOptions = {
     callbacks: {
         async session({ session, token }) {
             session.accessToken = token.accessToken;
+            session.user.id = token.orcid; // ORCID ID をセッションに追加
             return session;
         },
         async jwt({ token, account }) {
