@@ -23,6 +23,15 @@ export default function HomePage() {
 
 // import { useSession } from "next-auth/react";
 
+// import { Session } from "next-auth";
+// import { JWT } from "next-auth/jwt";
+
+declare module "next-auth" {
+  interface Session {
+    accessToken?: string;
+  }
+}
+
 export default function MyData() {
   const { data: session } = useSession();
 
