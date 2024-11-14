@@ -1,24 +1,37 @@
-// import { OAuthConfig } from "next-auth/providers";
-
 export const authOptions = {
     providers: [
         {
-            id: "osf",
-            name: "OSF",
+            id: "orcid",
+            name: "ORCID",
             type: "oauth",
-            clientId: process.env.OSF_CLIENT_ID,
-            clientSecret: process.env.OSF_CLIENT_SECRET,
+            clientId: process.env.ORCID_CLIENT_ID,
+            clientSecret: process.env.ORCID_CLIENT_SECRET,
             authorization: {
-                url: "https://accounts.osf.io/oauth2/authorize",
-                params: { scope: "osf.full_read osf.full_write" },
+                url: "https://orcid.org/oauth/authorize",
+                params: {
+                    scope: "/authenticate",
+                    response_type: "code",
+                    redirect_uri: process.env.NEXTAUTH_URL + "/api/auth/callback/orcid",
+                },
             },
-            token: "https://accounts.osf.io/oauth2/token",
-            userinfo: "https://api.osf.io/v2/users/me/",
+            token: "https://orcid.org/oauth/token",
+            userinfo: {
+                url: "https://pub.orcid.org/v2.1/[ORCID]",
+                async request({ tokens }) {
+                    const res = await fetch(`https://pub.orcid.org/v2.1/${tokens.orcid}`, {
+                        headers: {
+                            Authorization: `Bearer ${tokens.access_token}`,
+                            Accept: "application/json",
+                        },
+                    });
+                    return await res.json();
+                },
+            },
             profile(profile) {
                 return {
-                    id: profile.id,
-                    name: profile.full_name,
-                    email: profile.email,
+                    id: profile["orcid-identifier"].path,
+                    name: profile.person?.name?.["given-names"]?.value + " " + profile.person?.name?.["family-name"]?.value,
+                    email: profile.person?.emails?.email?.[0]?.email,
                 };
             },
         },
@@ -31,6 +44,7 @@ export const authOptions = {
         async jwt({ token, account }) {
             if (account) {
                 token.accessToken = account.access_token;
+                token.orcid = account.orcid;
             }
             return token;
         },
