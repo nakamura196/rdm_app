@@ -16,9 +16,10 @@ export const authOptions = {
             },
             token: "https://orcid.org/oauth/token",
             userinfo: {
-                url: "https://pub.orcid.org/v2.1/[ORCID]",
+                url: "https://pub.orcid.org/v3.0/[ORCID]",
                 async request({ tokens }) {
-                    const res = await fetch(`https://pub.orcid.org/v2.1/${tokens.orcid}`, {
+                    console.log({ tokens })
+                    const res = await fetch(`https://pub.orcid.org/v3.0/${tokens.orcid}`, {
                         headers: {
                             Authorization: `Bearer ${tokens.access_token}`,
                             Accept: "application/json",
@@ -28,8 +29,9 @@ export const authOptions = {
                 },
             },
             profile(profile) {
+                console.log({ profile })
                 return {
-                    id: profile["orcid-identifier"].path,
+                    id: profile["orcid-identifier"].path, // ORCID の ID を取得
                     name: profile.person?.name?.["given-names"]?.value + " " + profile.person?.name?.["family-name"]?.value,
                     email: profile.person?.emails?.email?.[0]?.email,
                 };
