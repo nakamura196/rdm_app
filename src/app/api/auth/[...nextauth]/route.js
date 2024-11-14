@@ -40,7 +40,7 @@ const handler = NextAuth({
             session.accessToken = token.accessToken;
             return session;
         },
-        async jwt({ token, account, user }) {
+        async jwt({ token, user }) { // account, 
             if (user) {
                 token.accessToken = user.accessToken;
             }
