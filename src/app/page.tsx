@@ -2,57 +2,44 @@
 
 import { signIn, signOut, useSession } from "next-auth/react";
 
-/*
-export default function HomePage() {
-  const { data: session } = useSession();
-
-  return (
-    <div>
-      {!session ? (
-        <button onClick={() => signIn("oauth")}>Sign in</button>
-      ) : (
-        <>
-          <p>Welcome, {session?.user?.name}</p>
-          <button onClick={() => signOut()}>Sign out</button>
-        </>
-      )}
-    </div>
-  );
-}
-  */
-
-// import { useSession } from "next-auth/react";
-
-// import { Session } from "next-auth";
-// import { JWT } from "next-auth/jwt";
-
-declare module "next-auth" {
-  interface Session {
-    accessToken?: string;
-  }
-}
-
 export default function MyData() {
-  const { data: session } = useSession();
+  const { data: session } = useSession() as {
+    data: {
+      user: {
+        id: string;
+        name?: string | null;
+        email?: string | null;
+        image?: string | null;
+      };
+      accessToken: string;
+    } | null;
+  };
 
   const fetchData = async () => {
     if (session) {
-      const res = await fetch("https://api.osf.io/v2/users/me/", {
-        headers: {
-          Authorization: `Bearer ${session.accessToken}`,
-        },
-      });
-      const data = await res.json();
-      console.log(data); // ユーザーデータを確認
+      if (session.user) {
+        const res = await fetch(
+          `https://pub.orcid.org/v3.0/${session.user.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${session.accessToken}`,
+              Accept: "application/json",
+            },
+          }
+        );
+
+        const data = await res.json();
+        console.log(data); // ユーザーデータを確認
+      }
     }
   };
 
   return (
     <div>
-      <button onClick={fetchData}>Get My OSF Data</button>
+      <button onClick={fetchData}>Get My ORCID Data</button>
 
       {!session ? (
-        <button onClick={() => signIn("oauth")}>Sign in</button>
+        <button onClick={() => signIn("orcid")}>Sign in</button>
       ) : (
         <>
           <p>Welcome, {session?.user?.name}</p>
