@@ -8,30 +8,17 @@ export default function MyData() {
       user: {
         id: string;
         name?: string | null;
-        email?: string | null;
-        image?: string | null;
       };
       accessToken: string;
     } | null;
   };
 
   const fetchData = async () => {
-    if (session) {
-      console.log({ session });
-      if (session.user) {
-        const res = await fetch(
-          `https://pub.orcid.org/v3.0/${session.user.id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${session.accessToken}`,
-              Accept: "application/json",
-            },
-          }
-        );
-
-        const data = await res.json();
-        console.log(data); // ユーザーデータを確認
-      }
+    if (session && session.user) {
+      // サーバー側のエンドポイント経由でデータを取得
+      const res = await fetch(`/api/orcid/${session.user.id}`);
+      const data = await res.json();
+      console.log(data); // ユーザーデータを確認
     }
   };
 
