@@ -26,8 +26,22 @@ const authOptions = {
                 };
             },
         },
+        {
+            id: "orcid",
+            name: "ORCID",
+            type: "oauth",
+            clientId: process.env.ORCID_CLIENT_ID,
+            clientSecret: process.env.ORCID_CLIENT_SECRET,
+            authorization: {
+                url: "https://orcid.org/oauth/authorize",
+                params: { scope: "/authenticate" },
+            },
+            token: {
+                url: "https://orcid.org/oauth/token",
+            }
+        },
     ],
-    useState: false,
+    useState: true,
     callbacks: {
         async redirect({ baseUrl }) {
             return baseUrl;

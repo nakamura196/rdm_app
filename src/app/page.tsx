@@ -8,7 +8,7 @@ export default function HomePage() {
   return (
     <div>
       {!session ? (
-        <button onClick={() => signIn("oauth")}>Sign in with GakuNin</button>
+        <button onClick={() => signIn("oauth")}>Sign in</button>
       ) : (
         <>
           <p>Welcome, {session?.user?.name}</p>
