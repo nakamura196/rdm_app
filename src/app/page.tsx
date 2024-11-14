@@ -17,6 +17,7 @@ export default function MyData() {
 
   const fetchData = async () => {
     if (session) {
+      console.log({ session });
       if (session.user) {
         const res = await fetch(
           `https://pub.orcid.org/v3.0/${session.user.id}`,
