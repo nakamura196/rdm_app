@@ -1,31 +1,40 @@
 "use client";
 
-import { signIn, signOut, useSession } from "next-auth/react";
+import { useAuth } from "@/hooks/useAuth"; // 新しく作成したカスタムフックをインポート
+import { useFetchNodes } from "@/hooks/useFetchNodes";
+import Hero from "./components/Hero";
+import Table from "./components/Table";
 
 export default function MyData() {
-  const { data: session } = useSession() as {
-    data: {
-      user: {
-        id: string;
-        name?: string | null;
-        email?: string | null;
-      };
-      accessToken: string;
-    } | null;
-  };
+  const { session, handleSignIn } = useAuth(); // useAuth フックを使用
+
+  const {
+    data: items,
+    error,
+    loading,
+  } = useFetchNodes(session?.accessToken || null);
 
   return (
-    <div>
-      {!session ? (
-        <button onClick={() => signIn("gakunin")}>Sign in</button>
+    <>
+      {session ? (
+        <div className="container mx-auto py-10">
+          {loading && (
+            <div className="flex justify-center items-center">
+              <span className="loading loading-spinner loading-lg" />
+            </div>
+          )}
+          {error && (
+            <div className="alert alert-error mb-4">
+              <p>{error}</p>
+            </div>
+          )}
+          {!loading && !error && (
+            <Table items={items} loading={loading} error={error} />
+          )}
+        </div>
       ) : (
-        <>
-          <p>Welcome, {session?.user?.name}</p>
-          <p>ID: {session?.user?.id}</p>
-          <p>Access Token: {session?.accessToken}</p>
-          <button onClick={() => signOut()}>Sign out</button>
-        </>
+        <Hero handleSignIn={handleSignIn} />
       )}
-    </div>
+    </>
   );
 }
