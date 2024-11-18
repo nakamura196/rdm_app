@@ -17,7 +17,7 @@ export default function MyData() {
   return (
     <>
       {session ? (
-        <div className="container mx-auto py-10">
+        <div className="container mx-auto py-10 px-4">
           {loading && (
             <div className="flex justify-center items-center">
               <span className="loading loading-spinner loading-lg" />

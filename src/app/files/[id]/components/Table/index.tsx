@@ -1,14 +1,24 @@
 // components/Table.tsx
 import React from "react";
 import type { Node } from "@/types/api";
-import Link from "next/link";
+// import Link from "next/link";
 interface TableProps {
-  items: Node[];
+  item: Node;
   loading: boolean;
   error: string | null;
 }
 
-const Table: React.FC<TableProps> = ({ items, loading, error }) => {
+const RenderValue = (value: any) => {
+  if (typeof value === "object") {
+    return JSON.stringify(value);
+  }
+  if (typeof value === "boolean") {
+    return value ? "true" : "false";
+  }
+  return value;
+};
+
+const Table: React.FC<TableProps> = ({ item, loading, error }) => {
   return (
     <div className="overflow-x-auto px-4">
       {loading && (
@@ -26,24 +36,17 @@ const Table: React.FC<TableProps> = ({ items, loading, error }) => {
           {/* head */}
           <thead>
             <tr>
-              <th>id</th>
-              <th>title</th>
-              <th>date_modified</th>
-              <th>action</th>
+              <th>Field</th>
+              <th>Value</th>
             </tr>
           </thead>
           <tbody>
             {/* row 1 */}
-            {items.map((item, index) => (
+
+            {Object.keys(item.attributes).map((key, index) => (
               <tr key={index}>
-                <td>{item.id}</td>
-                <td>{item.attributes.title}</td>
-                <td>{item.attributes.date_modified}</td>
-                <td>
-                  <Link className="link link-primary" href={`/${item.id}`}>
-                    {"Detail"}
-                  </Link>
-                </td>
+                <td>{key}</td>
+                <td>{RenderValue(item.attributes[key])}</td>
               </tr>
             ))}
           </tbody>

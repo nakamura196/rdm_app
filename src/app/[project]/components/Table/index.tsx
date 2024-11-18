@@ -3,12 +3,13 @@ import React from "react";
 import type { Node } from "@/types/api";
 import Link from "next/link";
 interface TableProps {
+  project: string;
   items: Node[];
   loading: boolean;
   error: string | null;
 }
 
-const Table: React.FC<TableProps> = ({ items, loading, error }) => {
+const Table: React.FC<TableProps> = ({ project, items, loading, error }) => {
   return (
     <div className="overflow-x-auto px-4">
       {loading && (
@@ -28,7 +29,7 @@ const Table: React.FC<TableProps> = ({ items, loading, error }) => {
             <tr>
               <th>id</th>
               <th>title</th>
-              <th>date_modified</th>
+              <th>provider</th>
               <th>action</th>
             </tr>
           </thead>
@@ -37,10 +38,13 @@ const Table: React.FC<TableProps> = ({ items, loading, error }) => {
             {items.map((item, index) => (
               <tr key={index}>
                 <td>{item.id}</td>
-                <td>{item.attributes.title}</td>
-                <td>{item.attributes.date_modified}</td>
+                <td>{item.attributes.name}</td>
+                <td>{item.attributes.provider}</td>
                 <td>
-                  <Link className="link link-primary" href={`/${item.id}`}>
+                  <Link
+                    className="link link-primary"
+                    href={`/${project}/${item.attributes.name}`}
+                  >
                     {"Detail"}
                   </Link>
                 </td>
