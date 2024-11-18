@@ -10,7 +10,7 @@ interface TableProps {
 
 const Table: React.FC<TableProps> = ({ items, loading, error }) => {
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto px-4">
       {loading && (
         <div className="flex justify-center items-center">
           <span className="loading loading-spinner loading-lg" />
