@@ -1,6 +1,7 @@
 "use client";
 
 import { useAuth } from "@/hooks/useAuth"; // 新しく作成したカスタムフックをインポート
+import Link from "next/link";
 
 export default function Header() {
   const { session, handleSignIn, handleSignOut } = useAuth(); // useAuth フックを使用
@@ -9,7 +10,9 @@ export default function Header() {
     <>
       <div className="navbar bg-base-100">
         <div className="flex-1">
-          <a className="btn btn-ghost text-xl">GRDM App</a>
+          <Link href="/" className="btn btn-ghost text-xl">
+            GRDM App
+          </Link>
         </div>
         <div className="flex-none">
           {session ? (
