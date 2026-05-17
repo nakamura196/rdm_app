@@ -11,9 +11,10 @@
   "dependencies": {
     "@headlessui/react": "^2.2.0",
     "@heroicons/react": "^2.1.5",
-    "next": "15.0.7",
+    "next": "15.5.18",
     "next-auth": "^4.24.10",
-    "react-dom": "19.0.0-rc-69d4b800-20241021"
+    "react": "19.2.6",
+    "react-dom": "19.2.6"
   },
   "devDependencies": {
     "@types/node": "^22",
